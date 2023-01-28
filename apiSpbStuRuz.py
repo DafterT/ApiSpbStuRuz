@@ -1,7 +1,9 @@
 """ Основная логика приложения """
 from aiohttp import ClientSession, ClientConnectionError
-from aiologger.loggers.json import JsonLogger
 import json
+
+import logging
+from config import LogConfig
 
 import dataClasses
 from apiPaths import *
@@ -9,20 +11,22 @@ from apiPaths import *
 
 class ApiSpbStuRuz:
     async def __aenter__(self):
+        self._logger = logging.getLogger(LogConfig.logger_name)
+        self._logger.setLevel(LogConfig.logging_level)
+        self._logger.addHandler(LogConfig.log_handler)
+        self._logger.info('Creating a new session.')
         self._session = ClientSession()
-        self._logger = JsonLogger.with_default_handlers()
         return self
 
     async def get_response_json(self, path: str) -> json:
-        await self._logger.info(path)
         try:
+            self._logger.debug(f"Try to get information from {root}{path}.")
             async with self._session.get(url=f'{root}{path}') as response:
                 return await response.json()
         except ClientConnectionError as e:
-            await self._logger.error(e)
+            self._logger.exception(f"Can\'t connect to the server: {e}")
 
     async def __aexit__(self, *err):
+        self._logger.info('End of the session.')
         await self._session.close()
         self._session = None
-        await self._logger.shutdown()
-        self._logger = None

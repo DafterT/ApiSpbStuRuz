@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 
 class LogConfig:
@@ -7,7 +8,7 @@ class LogConfig:
     # Уровень отладки
     logging_level = logging.DEBUG
     # Название файла отладки
-    __log_file_name = 'log.txt'
+    __log_file_name = f'log-{datetime.datetime.now().strftime("%Y%m%d-%H%M%S%f")}.txt'
     log_handler = logging.FileHandler(__log_file_name, mode='w')
     # Формат вывода в отладчик
     __log_formatter = logging.Formatter('%(name)s %(asctime)s %(levelname)s %(message)s')

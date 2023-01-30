@@ -5,7 +5,7 @@ from aiohttp import ClientSession, ClientConnectionError
 import json
 # Логирование
 import logging
-import logConfig
+from logConfig import LogConfig
 # Мои библиотеки
 import dataClasses
 import apiPaths
@@ -14,9 +14,9 @@ import apiPaths
 class ApiSpbStuRuz:
     async def __aenter__(self):
         # Инициализация логгера
-        self._logger = logging.getLogger(logConfig.logger_name)
-        self._logger.setLevel(logConfig.logging_level)
-        self._logger.addHandler(logConfig.log_handler)
+        self._logger = logging.getLogger(LogConfig.logger_name)
+        self._logger.setLevel(LogConfig.logging_level)
+        self._logger.addHandler(LogConfig.log_handler)
         self._logger.info('Creating a new session.')
         # Инициализация сессии
         self._session = ClientSession()

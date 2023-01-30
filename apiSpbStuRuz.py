@@ -59,7 +59,7 @@ class ApiSpbStuRuz:
 
     async def get_faculty_by_id(self, faculty_id: int) -> [dataClasses.Faculty]:
         self._logger.debug(f'Try to get faculty by id: {faculty_id}')
-        faculty_json = await self.__get_response_json(f'{apiPaths.faculties}/{faculty_id}')
+        faculty_json = await self.__get_response_json(f'{apiPaths.faculties_with_id.format(faculty_id)}')
         self._logger.debug(f'Information about faculty: {faculty_json}')
         if faculty_json is None:
             self._logger.error(f'Returned faculty_json is None')

@@ -7,3 +7,14 @@ class Faculty:
     id: int
     name: str
     abbr: str
+
+
+@dataclass(frozen=True)
+class Group:
+    id: int
+    name: str
+    level: int
+    type: str
+    kind: int
+    spec: str
+    year: int

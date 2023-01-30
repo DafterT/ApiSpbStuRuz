@@ -6,6 +6,8 @@ from aiohttp import ClientSession, ClientConnectionError
 import json
 # Логирование
 import logging
+
+from dataClasses import Faculty
 from logConfig import LogConfig
 # Мои библиотеки
 import dataClasses
@@ -52,6 +54,7 @@ class ApiSpbStuRuz:
             return None
         except TimeoutError as e:
             self._logger.error(f'Waiting time exceeded: {e}')
+            return None
 
     async def get_faculties(self) -> [dataClasses.Faculty]:
         self._logger.debug(f'Try to get faculties')
@@ -71,7 +74,7 @@ class ApiSpbStuRuz:
             self._logger.error(f'Can\'t convert {faculties_json} to Faculty: {e}')
             return None
 
-    async def get_faculty_by_id(self, faculty_id: int) -> [dataClasses.Faculty]:
+    async def get_faculty_by_id(self, faculty_id: int) -> Faculty | None:
         self._logger.debug(f'Try to get faculty by id: {faculty_id}')
         faculty_json = await self.__get_response_json(f'{apiPaths.faculties_with_id.format(faculty_id)}')
         self._logger.debug(f'Information about faculty: {faculty_json}')
@@ -84,6 +87,24 @@ class ApiSpbStuRuz:
             return faculty
         except TypeError as e:
             self._logger.error(f'Can\'t convert {faculty_json} to Faculty: {e}')
+            return None
+
+    async def get_groups_on_faculties_by_id(self, faculty_id: int):
+        self._logger.debug(f'Try to get groups by faculty id: {faculty_id}')
+        groups_json = await self.__get_response_json(f'{apiPaths.groups_by_faculty_id.format(faculty_id)}')
+        self._logger.debug(f'Groups on faculty with id {faculty_id}: {groups_json}')
+        if groups_json is None:
+            self._logger.error(f'Returned groups_json is None')
+            return None
+        if 'groups' not in groups_json:
+            self._logger.error(f'Can\'t found "groups" in json_file')
+            return None
+        try:
+            groups_list = [dataClasses.Group(**item) for item in groups_json['groups']]
+            self._logger.debug(f'Groups on faculty with id {faculty_id}: {groups_list}')
+            return groups_list
+        except TypeError as e:
+            self._logger.error(f'Can\'t convert {groups_json} to Groups: {e}')
             return None
 
     async def __aexit__(self, *err):

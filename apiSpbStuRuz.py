@@ -13,13 +13,14 @@ import apiPaths
 
 
 class ApiSpbStuRuz:
-    def __init__(self, proxy=None):
+    def __init__(self, proxy=None, timeout=5):
         # Инициализация логгера
         self._logger = logging.getLogger(LogConfig.logger_name)
         self._logger.setLevel(LogConfig.logging_level)
         self._logger.addHandler(LogConfig.log_handler)
         # Прокси
         self._proxy = proxy
+        self._timeout = timeout
 
     async def __aenter__(self):
         # Инициализация сессии
@@ -31,7 +32,8 @@ class ApiSpbStuRuz:
         try:
             self._logger.debug(f'Try to get information from "{apiPaths.root}{path}"')
             # Запрос на сервер по адресу api + путь
-            async with self._session.get(url=f'{apiPaths.root}{path}', proxy=self._proxy) as response:
+            async with self._session.get(url=f'{apiPaths.root}{path}', proxy=self._proxy,
+                                         timeout=self._timeout) as response:
                 # Проверка корректности ответа
                 if response.status == 200:
                     self._logger.debug(f'Correct status code from "{apiPaths.root}{path}"')
@@ -43,10 +45,13 @@ class ApiSpbStuRuz:
             # Ошибка клиента при запросе на сервер
             self._logger.error(f'Can\'t connect to the server: {e}')
             return None
-        except aiohttp.client_exceptions.InvalidURL as e:
+        except (aiohttp.client_exceptions.InvalidURL, aiohttp.client_exceptions.ClientHttpProxyError,
+                aiohttp.client_exceptions.ClientProxyConnectionError) as e:
             # Ошибка с прокси
             self._logger.error(f'Invalid proxy {self._proxy}: {e}')
             return None
+        except TimeoutError as e:
+            self._logger.error(f'Waiting time exceeded: {e}')
 
     async def get_faculties(self) -> [dataClasses.Faculty]:
         self._logger.debug(f'Try to get faculties')

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class Faculties:
+class Faculty:
     id: int
     name: str
     abbr: str

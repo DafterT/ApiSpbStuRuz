@@ -5,7 +5,7 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("http://77.247.126.194:3128", timeout=10) as api:
-        print(await api.get_groups_on_faculties_by_id(100))
+        print(await api.get_teachers())
 
 
 if __name__ == "__main__":

@@ -6,3 +6,5 @@ faculties = '/faculties'
 faculties_with_id = f'{faculties}/{{0}}'
 # Получить группы в высшей школе по id школы
 groups_by_faculty_id = f'{faculties}/{{0}}/groups'
+# Получить всех учителей
+teachers = '/teachers'

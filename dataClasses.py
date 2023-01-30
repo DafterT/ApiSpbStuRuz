@@ -18,3 +18,15 @@ class Group:
     kind: int
     spec: str
     year: int
+
+
+@dataclass(frozen=True)
+class Teacher:
+    id: int
+    oid: int
+    full_name: str
+    first_name: str
+    middle_name: str
+    last_name: str
+    grade: str
+    chair: str

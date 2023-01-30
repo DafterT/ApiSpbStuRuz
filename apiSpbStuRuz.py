@@ -1,6 +1,7 @@
 """ Основная логика приложения """
 
 # Основные библиотеки
+import aiohttp.client_exceptions
 from aiohttp import ClientSession, ClientConnectionError
 import json
 # Логирование
@@ -12,13 +13,17 @@ import apiPaths
 
 
 class ApiSpbStuRuz:
-    async def __aenter__(self):
+    def __init__(self, proxy=None):
         # Инициализация логгера
         self._logger = logging.getLogger(LogConfig.logger_name)
         self._logger.setLevel(LogConfig.logging_level)
         self._logger.addHandler(LogConfig.log_handler)
-        self._logger.info('Creating a new session.')
+        # Прокси
+        self._proxy = proxy
+
+    async def __aenter__(self):
         # Инициализация сессии
+        self._logger.info('Creating a new session.')
         self._session = ClientSession()
         return self
 
@@ -26,7 +31,7 @@ class ApiSpbStuRuz:
         try:
             self._logger.debug(f'Try to get information from "{apiPaths.root}{path}"')
             # Запрос на сервер по адресу api + путь
-            async with self._session.get(url=f'{apiPaths.root}{path}') as response:
+            async with self._session.get(url=f'{apiPaths.root}{path}', proxy=self._proxy) as response:
                 # Проверка корректности ответа
                 if response.status == 200:
                     self._logger.debug(f'Correct status code from "{apiPaths.root}{path}"')
@@ -37,6 +42,10 @@ class ApiSpbStuRuz:
         except ClientConnectionError as e:
             # Ошибка клиента при запросе на сервер
             self._logger.error(f'Can\'t connect to the server: {e}')
+            return None
+        except aiohttp.client_exceptions.InvalidURL as e:
+            # Ошибка с прокси
+            self._logger.error(f'Invalid proxy {self._proxy}: {e}')
             return None
 
     async def get_faculties(self) -> [dataClasses.Faculty]:

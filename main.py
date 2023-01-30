@@ -6,6 +6,8 @@ from apiSpbStuRuz import ApiSpbStuRuz
 async def main():
     async with ApiSpbStuRuz() as api:
         faculties = await api.get_faculties()
+        if faculties is None:
+            return
         for item in faculties:
             print(await api.get_faculty_by_id(item.id))
 

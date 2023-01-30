@@ -54,7 +54,22 @@ class ApiSpbStuRuz:
             self._logger.debug(f'Information about faculties in list: {faculties_list}')
             return faculties_list
         except TypeError as e:
-            self._logger.error(f'Can\'t convert to Faculty: {e}')
+            self._logger.error(f'Can\'t convert {faculties_json} to Faculty: {e}')
+            return None
+
+    async def get_faculty_by_id(self, faculty_id: int) -> [dataClasses.Faculty]:
+        self._logger.debug(f'Try to get faculty by id: {faculty_id}')
+        faculty_json = await self.__get_response_json(f'{apiPaths.faculties}/{faculty_id}')
+        self._logger.debug(f'Information about faculty: {faculty_json}')
+        if faculty_json is None:
+            self._logger.error(f'Returned faculty_json is None')
+            return None
+        try:
+            faculty = dataClasses.Faculty(**faculty_json)
+            self._logger.debug(f'Information about faculties in list: {faculty}')
+            return faculty
+        except TypeError as e:
+            self._logger.error(f'Can\'t convert {faculty_json} to Faculty: {e}')
             return None
 
     async def __aexit__(self, *err):

@@ -4,7 +4,7 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 
 async def main():
-    async with ApiSpbStuRuz("http://77.247.126.194:3128", timeout=10) as api:
+    async with ApiSpbStuRuz("", timeout=10) as api:
         print(await api.get_teachers())
 
 

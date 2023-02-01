@@ -5,7 +5,9 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        print(await api.get_teacher_by_id(99870))
+        teacher = await api.get_teacher_scheduler_by_id(3810)
+        print(teacher.teacher)
+        print(type(teacher.days))
 
 
 if __name__ == "__main__":

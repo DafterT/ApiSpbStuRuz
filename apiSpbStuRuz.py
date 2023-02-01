@@ -110,6 +110,11 @@ class ApiSpbStuRuz:
         teacher = await self.__get_something(function, apiPaths.teacher_by_id.format(teacher_id), "Teacher")
         return teacher
 
+    async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.Scheduler | None:
+        function = lambda scheduler_json: dataClasses.Scheduler(**scheduler_json)
+        scheduler = await self.__get_something(function, apiPaths.teachers_scheduler_by_id.format(teacher_id), "Teachers scheduler")
+        return scheduler
+
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')
         # Уничтожение сессии

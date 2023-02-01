@@ -8,5 +8,7 @@ faculty_by_id = f'{faculties}/{{0}}'
 groups_by_faculty_id = f'{faculties}/{{0}}/groups'
 # Получить всех учителей
 teachers = '/teachers'
-# Учитель по id (требует дополнительного форматирования
+# Учитель по id (требует дополнительного форматирования)
 teacher_by_id = f'{teachers}/{{0}}'
+# Расписание учителя по id (требует дополнительного форматирования)
+teachers_scheduler_by_id = f'{teachers}/{{0}}/scheduler'

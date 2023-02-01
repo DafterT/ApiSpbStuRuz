@@ -5,7 +5,7 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        print(await api.get_teachers())
+        print(await api.get_teacher_by_id(99870))
 
 
 if __name__ == "__main__":

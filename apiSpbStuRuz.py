@@ -89,7 +89,7 @@ class ApiSpbStuRuz:
     # Получение кафедры по id
     async def get_faculty_by_id(self, faculty_id: int) -> dataClasses.Faculty | None:
         function = lambda faculty_json: dataClasses.Faculty(**faculty_json)
-        faculty = await self.__get_something(function, apiPaths.faculties_with_id.format(faculty_id), "Faculty")
+        faculty = await self.__get_something(function, apiPaths.faculty_by_id.format(faculty_id), "Faculty")
         return faculty
 
     # Получение списка групп по id кафедры
@@ -103,6 +103,12 @@ class ApiSpbStuRuz:
         function = lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']]
         teacher_list = await self.__get_something(function, apiPaths.teachers, "teachers")
         return teacher_list
+
+    # Выдает преподавателя по id
+    async def get_teacher_by_id(self, teacher_id: int) -> dataClasses.Teacher | None:
+        function = lambda teacher_json: dataClasses.Teacher(**teacher_json)
+        teacher = await self.__get_something(function, apiPaths.teacher_by_id.format(teacher_id), "Teacher")
+        return teacher
 
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')

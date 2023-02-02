@@ -1,6 +1,6 @@
 """File with some data classes"""
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 
 
 @dataclass(frozen=True)
@@ -46,15 +46,16 @@ class Date:
         object.__setattr__(self, "day", day)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, init=False)
 class Week:
-    date_start: Date | str
-    date_end: Date | str
+    date_start: Date
+    date_end: Date
     is_odd: bool
 
-    def __post_init__(self):
-        object.__setattr__(self, "date_start", Date(self.date_start))
-        object.__setattr__(self, "date_end", Date(self.date_end))
+    def __init__(self, date_start: str, date_end: str, is_odd: bool):
+        object.__setattr__(self, "date_start", Date(date_start))
+        object.__setattr__(self, "date_end", Date(date_end))
+        object.__setattr__(self, "is_odd", is_odd)
 
 
 @dataclass(frozen=True, init=False)

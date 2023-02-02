@@ -162,6 +162,15 @@ class ApiSpbStuRuz:
         )
         return building
 
+    # Получить корпус по id
+    async def get_rooms_by_building_id(self, building_id: int) -> [dataClasses.Room]:
+        rooms = await self.__get_something(
+            lambda rooms_json: [dataClasses.Room(**item) for item in rooms_json['rooms']],
+            apiPaths.rooms_by_building_id.format(building_id),
+            "Rooms"
+        )
+        return rooms
+
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')
         # Уничтожение сессии

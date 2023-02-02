@@ -1,6 +1,6 @@
 """File with some data classes"""
 import re
-from dataclasses import dataclass, field, InitVar
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
@@ -100,9 +100,13 @@ class Building:
 
 
 @dataclass(frozen=True)
-class Auditory:
+class Room:
     id: int
     name: str
+
+
+@dataclass(frozen=True)
+class Auditory(Room):
     building: Building | dict
 
     def __post_init__(self):

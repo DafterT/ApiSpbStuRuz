@@ -147,11 +147,20 @@ class ApiSpbStuRuz:
     # Получить список корпусов
     async def get_buildings(self) -> [dataClasses.Building]:
         buildings = await self.__get_something(
-            lambda building_json: [dataClasses.Building(**item) for item in building_json['buildings']],
+            lambda buildings_json: [dataClasses.Building(**item) for item in buildings_json['buildings']],
             apiPaths.buildings,
             "Buildings"
         )
         return buildings
+
+    # Получить корпус по id
+    async def get_building_by_id(self, building_id: int) -> dataClasses.Building:
+        building = await self.__get_something(
+            lambda building_json: dataClasses.Building(**building_json),
+            apiPaths.building_by_id.format(building_id),
+            "Building"
+        )
+        return building
 
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')

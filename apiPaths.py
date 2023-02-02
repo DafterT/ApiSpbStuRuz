@@ -16,3 +16,5 @@ teachers_scheduler_by_id = f'{teachers}/{{0}}/scheduler'
 teachers_scheduler_by_id_and_date = f'{teachers_scheduler_by_id}?date={{1}}-{{2}}-{{3}}'
 # Получить список корпусов, "строений"
 buildings = '/buildings'
+# Получить корпус, "строение" по id
+building_by_id = f'{buildings}/{{0}}'

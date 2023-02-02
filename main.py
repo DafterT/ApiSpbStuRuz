@@ -5,8 +5,8 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        buildings = await api.get_buildings()
-        print(buildings)
+        building = await api.get_building_by_id(11)
+        print(building)
 
 
 if __name__ == "__main__":

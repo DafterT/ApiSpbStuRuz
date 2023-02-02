@@ -14,3 +14,5 @@ teacher_by_id = f'{teachers}/{{0}}'
 teachers_scheduler_by_id = f'{teachers}/{{0}}/scheduler'
 # Расписание учителя по id в заданную дату (требует дополнительного форматирования)
 teachers_scheduler_by_id_and_date = f'{teachers_scheduler_by_id}?date={{1}}-{{2}}-{{3}}'
+# Получить список корпусов, "строений"
+buildings = '/buildings'

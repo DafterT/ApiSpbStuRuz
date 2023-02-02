@@ -119,11 +119,11 @@ class Lesson:
     time_end: Time | str
     parity: int
     typeObj: TypeObj | dict
+    webinar_url: str
+    lms_url: str
     groups: tuple[Group | dict] = field(default_factory=tuple)
     teachers: tuple[Teacher | dict] = field(default_factory=tuple)
     auditories: tuple[Auditory | dict] = field(default_factory=tuple)
-    webinar_url: str = ''
-    lms_url: str = ''
 
     def __post_init__(self):
         object.__setattr__(self, "time_start", Time(self.time_start))
@@ -148,8 +148,8 @@ class Day:
 @dataclass(frozen=True)
 class Scheduler:
     week: Week | dict
+    teacher: Teacher | dict
     days: tuple[Day | dict] = field(default_factory=tuple)
-    teacher: Teacher | dict = Teacher(0, 0, "Иванов Иван Иванович", "Иванов", "Иван", "Иванович", "", "")
 
     def __post_init__(self):
         object.__setattr__(self, "week", Week(**self.week))

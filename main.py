@@ -5,8 +5,8 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        teachers_scheduler = await api.get_teacher_scheduler_by_id_and_date(3810, 2023, 2, 9)
-        print(teachers_scheduler)
+        buildings = await api.get_buildings()
+        print(buildings)
 
 
 if __name__ == "__main__":

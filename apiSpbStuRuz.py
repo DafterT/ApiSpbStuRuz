@@ -125,6 +125,7 @@ class ApiSpbStuRuz:
         )
         return teacher
 
+    # Выдает расписание преподавателя по id
     async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.Scheduler | None:
         scheduler = await self.__get_something(
             lambda scheduler_json: dataClasses.Scheduler(**scheduler_json),
@@ -133,6 +134,7 @@ class ApiSpbStuRuz:
         )
         return scheduler
 
+    # Выдает расписание преподавателя по id и дате
     async def get_teacher_scheduler_by_id_and_date(self, teacher_id: int,
                                                    year: int, month: int, day: int) -> dataClasses.Scheduler | None:
         scheduler = await self.__get_something(
@@ -141,6 +143,15 @@ class ApiSpbStuRuz:
             "Teachers scheduler by day"
         )
         return scheduler
+
+    # Получить список корпусов
+    async def get_buildings(self) -> [dataClasses.Building]:
+        buildings = await self.__get_something(
+            lambda building_json: [dataClasses.Building(**item) for item in building_json['buildings']],
+            apiPaths.buildings,
+            "Buildings"
+        )
+        return buildings
 
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')

@@ -82,37 +82,64 @@ class ApiSpbStuRuz:
 
     # Получение кафедр
     async def get_faculties(self) -> [dataClasses.Faculty]:
-        function = lambda faculties_json: [dataClasses.Faculty(**item) for item in faculties_json['faculties']]
-        faculties_list = await self.__get_something(function, apiPaths.faculties, "Faculties")
+        faculties_list = await self.__get_something(
+            lambda faculties_json: [dataClasses.Faculty(**item) for item in faculties_json['faculties']],
+            apiPaths.faculties,
+            "Faculties"
+        )
         return faculties_list
 
     # Получение кафедры по id
     async def get_faculty_by_id(self, faculty_id: int) -> dataClasses.Faculty | None:
-        function = lambda faculty_json: dataClasses.Faculty(**faculty_json)
-        faculty = await self.__get_something(function, apiPaths.faculty_by_id.format(faculty_id), "Faculty")
+        faculty = await self.__get_something(
+            lambda faculty_json: dataClasses.Faculty(**faculty_json),
+            apiPaths.faculty_by_id.format(faculty_id),
+            "Faculty"
+        )
         return faculty
 
     # Получение списка групп по id кафедры
     async def get_groups_on_faculties_by_id(self, faculty_id: int) -> [dataClasses.Group]:
-        function = lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']]
-        groups_list = await self.__get_something(function, apiPaths.groups_by_faculty_id.format(faculty_id), "groups")
+        groups_list = await self.__get_something(
+            lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']],
+            apiPaths.groups_by_faculty_id.format(faculty_id),
+            "groups"
+        )
         return groups_list
 
     # Получение списка учителей
     async def get_teachers(self) -> [dataClasses.Teacher]:
-        function = lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']]
-        teacher_list = await self.__get_something(function, apiPaths.teachers, "teachers")
+        teacher_list = await self.__get_something(
+            lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']],
+            apiPaths.teachers,
+            "teachers"
+        )
         return teacher_list
 
     # Выдает преподавателя по id
     async def get_teacher_by_id(self, teacher_id: int) -> dataClasses.Teacher | None:
-        function = lambda teacher_json: dataClasses.Teacher(**teacher_json)
-        teacher = await self.__get_something(function, apiPaths.teacher_by_id.format(teacher_id), "Teacher")
+        teacher = await self.__get_something(
+            lambda teacher_json: dataClasses.Teacher(**teacher_json),
+            apiPaths.teacher_by_id.format(teacher_id),
+            "Teacher"
+        )
         return teacher
 
     async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.Scheduler | None:
-        function = lambda scheduler_json: dataClasses.Scheduler(**scheduler_json)
-        scheduler = await self.__get_something(function, apiPaths.teachers_scheduler_by_id.format(teacher_id), "Teachers scheduler")
+        scheduler = await self.__get_something(
+            lambda scheduler_json: dataClasses.Scheduler(**scheduler_json),
+            apiPaths.teachers_scheduler_by_id.format(teacher_id),
+            "Teachers scheduler"
+        )
+        return scheduler
+
+    async def get_teacher_scheduler_by_id_and_date(self, teacher_id: int,
+                                                   year: int, month: int, day: int) -> dataClasses.Scheduler | None:
+        scheduler = await self.__get_something(
+            lambda scheduler_json: dataClasses.Scheduler(**scheduler_json),
+            apiPaths.teachers_scheduler_by_id_and_date.format(teacher_id, year, month, day),
+            "Teachers scheduler by day"
+        )
         return scheduler
 
     async def __aexit__(self, *err):

@@ -176,8 +176,20 @@ class ApiSpbStuRuz:
                                                         building_id: int, room_id: int) -> dataClasses.SchedulerRoom:
         rooms_scheduler = await self.__get_something(
             lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
-            apiPaths.rooms_scheduler_by_id_and_by_building_id.format(building_id, room_id),
+            apiPaths.rooms_scheduler_by_id_and_building_id.format(building_id, room_id),
             "Room's scheduler"
+        )
+        return rooms_scheduler
+
+    async def get_rooms_scheduler_by_id_and_building_id_and_date(self,
+                                                                 building_id: int,
+                                                                 room_id: int,
+                                                                 year: int, month: int, day: int
+                                                                 ) -> dataClasses.SchedulerRoom:
+        rooms_scheduler = await self.__get_something(
+            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
+            apiPaths.rooms_scheduler_by_id_and_building_id_and_date.format(building_id, room_id, year, month, day),
+            "Room's scheduler by date"
         )
         return rooms_scheduler
 

@@ -126,9 +126,9 @@ class ApiSpbStuRuz:
         return teacher
 
     # Выдает расписание преподавателя по id
-    async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.Scheduler | None:
+    async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.SchedulerTeacher | None:
         scheduler = await self.__get_something(
-            lambda scheduler_json: dataClasses.Scheduler(**scheduler_json),
+            lambda scheduler_json: dataClasses.SchedulerTeacher(**scheduler_json),
             apiPaths.teachers_scheduler_by_id.format(teacher_id),
             "Teachers scheduler"
         )
@@ -136,9 +136,10 @@ class ApiSpbStuRuz:
 
     # Выдает расписание преподавателя по id и дате
     async def get_teacher_scheduler_by_id_and_date(self, teacher_id: int,
-                                                   year: int, month: int, day: int) -> dataClasses.Scheduler | None:
+                                                   year: int, month: int,
+                                                   day: int) -> dataClasses.SchedulerTeacher | None:
         scheduler = await self.__get_something(
-            lambda scheduler_json: dataClasses.Scheduler(**scheduler_json),
+            lambda scheduler_json: dataClasses.SchedulerTeacher(**scheduler_json),
             apiPaths.teachers_scheduler_by_id_and_date.format(teacher_id, year, month, day),
             "Teachers scheduler by day"
         )
@@ -170,6 +171,15 @@ class ApiSpbStuRuz:
             "Rooms"
         )
         return rooms
+
+    async def get_rooms_scheduler_by_id_and_building_id(self,
+                                                        building_id: int, room_id: int) -> dataClasses.SchedulerRoom:
+        rooms_scheduler = await self.__get_something(
+            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
+            apiPaths.rooms_scheduler_by_id_and_by_building_id.format(building_id, room_id),
+            "Room's scheduler"
+        )
+        return rooms_scheduler
 
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')

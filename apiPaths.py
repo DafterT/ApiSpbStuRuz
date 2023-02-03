@@ -20,3 +20,5 @@ buildings = '/buildings'
 building_by_id = f'{buildings}/{{0}}'
 # Получить комнаты в корпусе по id
 rooms_by_building_id = f'{building_by_id}/rooms'
+# Получить расписание комнаты в корпусе по id корпуса и id комнаты
+rooms_scheduler_by_id_and_by_building_id = f'{rooms_by_building_id}/{{1}}/scheduler'

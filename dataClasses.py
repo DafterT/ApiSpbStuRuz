@@ -126,7 +126,7 @@ class Lesson:
     webinar_url: str
     lms_url: str
     groups: tuple[Group | dict] = field(default_factory=tuple)
-    teachers: tuple[Teacher | dict] = field(default_factory=tuple)
+    teachers: tuple[Teacher | dict] | None = field(default_factory=tuple)
     auditories: tuple[Auditory | dict] = field(default_factory=tuple)
 
     def __post_init__(self):
@@ -134,7 +134,8 @@ class Lesson:
         object.__setattr__(self, "time_end", Time(self.time_end))
         object.__setattr__(self, "typeObj", TypeObj(**self.typeObj))
         object.__setattr__(self, "groups", tuple([Group(**i) for i in self.groups]))
-        object.__setattr__(self, "teachers", tuple([Teacher(**i) for i in self.teachers]))
+        if self.teachers is not None:
+            object.__setattr__(self, "teachers", tuple([Teacher(**i) for i in self.teachers]))
         object.__setattr__(self, "auditories", tuple([Auditory(**i) for i in self.auditories]))
 
 
@@ -150,7 +151,7 @@ class Day:
 
 
 @dataclass(frozen=True)
-class Scheduler:
+class SchedulerTeacher:
     week: Week | dict
     teacher: Teacher | dict
     days: tuple[Day | dict] = field(default_factory=tuple)
@@ -158,4 +159,16 @@ class Scheduler:
     def __post_init__(self):
         object.__setattr__(self, "week", Week(**self.week))
         object.__setattr__(self, "teacher", Teacher(**self.teacher))
+        object.__setattr__(self, "days", tuple([Day(**i) for i in self.days]))
+
+
+@dataclass(frozen=True)
+class SchedulerRoom:
+    week: Week | dict
+    room: Auditory | dict
+    days: tuple[Day | dict] = field(default_factory=tuple)
+
+    def __post_init__(self):
+        object.__setattr__(self, "week", Week(**self.week))
+        object.__setattr__(self, "room", Auditory(**self.room))
         object.__setattr__(self, "days", tuple([Day(**i) for i in self.days]))

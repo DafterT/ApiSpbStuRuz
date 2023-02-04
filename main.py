@@ -5,8 +5,8 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        groups_scheduler = await api.get_groups_scheduler_by_id_and_date(35376, 2023, 2, 6)
-        print(groups_scheduler)
+        groups = await api.get_groups_by_name("3530901/1")
+        [print(group) for group in groups]
 
 
 if __name__ == "__main__":

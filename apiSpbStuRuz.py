@@ -155,7 +155,7 @@ class ApiSpbStuRuz:
         return buildings
 
     # Получить корпус по id
-    async def get_building_by_id(self, building_id: int) -> dataClasses.Building:
+    async def get_building_by_id(self, building_id: int) -> dataClasses.Building | None:
         building = await self.__get_something(
             lambda building_json: dataClasses.Building(**building_json),
             apiPaths.building_by_id.format(building_id),
@@ -172,8 +172,11 @@ class ApiSpbStuRuz:
         )
         return rooms
 
+    # Получить расписание в аудитории по id здания и аудитории
     async def get_rooms_scheduler_by_id_and_building_id(self,
-                                                        building_id: int, room_id: int) -> dataClasses.SchedulerRoom:
+                                                        building_id: int,
+                                                        room_id: int
+                                                        ) -> dataClasses.SchedulerRoom | None:
         rooms_scheduler = await self.__get_something(
             lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
             apiPaths.rooms_scheduler_by_id_and_building_id.format(building_id, room_id),
@@ -181,11 +184,12 @@ class ApiSpbStuRuz:
         )
         return rooms_scheduler
 
+    # Получить расписание в аудитории по id здания и аудитории в определенную дату
     async def get_rooms_scheduler_by_id_and_building_id_and_date(self,
                                                                  building_id: int,
                                                                  room_id: int,
                                                                  year: int, month: int, day: int
-                                                                 ) -> dataClasses.SchedulerRoom:
+                                                                 ) -> dataClasses.SchedulerRoom | None:
         rooms_scheduler = await self.__get_something(
             lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
             apiPaths.rooms_scheduler_by_id_and_building_id_and_date.format(building_id, room_id, year, month, day),
@@ -193,6 +197,7 @@ class ApiSpbStuRuz:
         )
         return rooms_scheduler
 
+    # Получить расписание группы по id
     async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup:
         groups_scheduler = await self.__get_something(
             lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
@@ -201,14 +206,24 @@ class ApiSpbStuRuz:
         )
         return groups_scheduler
 
+    # Получить расписание группы по id на определенную дату
     async def get_groups_scheduler_by_id_and_date(self, group_id: int,
-                                                  year: int, month: int, day: int) -> dataClasses.SchedulerGroup:
+                                                  year: int, month: int, day: int) -> dataClasses.SchedulerGroup | None:
         groups_scheduler = await self.__get_something(
             lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
             apiPaths.groups_scheduler_by_id_and_date.format(group_id, year, month, day),
             "Group's scheduler by date"
         )
         return groups_scheduler
+
+    # Получить группу по её имени
+    async def get_groups_by_name(self, groups_name: str) -> [dataClasses.Group]:
+        groups = await self.__get_something(
+            lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']],
+            apiPaths.search_groups_by_name.format(groups_name),
+            "Group's by name"
+        )
+        return groups
 
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')

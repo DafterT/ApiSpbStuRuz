@@ -31,8 +31,8 @@ groups_scheduler_by_id_and_date = f'{groups_scheduler_by_id}?date={{1}}-{{2}}-{{
 # Базовый путь к поиску
 search_root = '/search'
 # Поиск группы по её имени
-search_groups_by_name = f'{search_root}/groups?q={{1}}'
+search_groups_by_name = f'{search_root}/groups?q={{0}}'
 # Поиск учителя по его имени (по части)
-search_teachers_by_name = f'{search_root}/teachers?q={{1}}'
+search_teachers_by_name = f'{search_root}/teachers?q={{0}}'
 # Поиск комнат по номеру (имени)
-search_rooms_by_name = f'{search_root}/rooms?q={{1}}'
+search_rooms_by_name = f'{search_root}/rooms?q={{0}}'

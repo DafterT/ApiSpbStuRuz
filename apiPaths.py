@@ -28,3 +28,11 @@ rooms_scheduler_by_id_and_building_id_and_date = f'{rooms_scheduler_by_id_and_bu
 groups_scheduler_by_id = '/scheduler/{0}'
 # Получить расписание группы по её id в определенную дату
 groups_scheduler_by_id_and_date = f'{groups_scheduler_by_id}?date={{1}}-{{2}}-{{3}}'
+# Базовый путь к поиску
+search_root = '/search'
+# Поиск группы по её имени
+search_groups_by_name = f'{search_root}/groups?q={{1}}'
+# Поиск учителя по его имени (по части)
+search_teachers_by_name = f'{search_root}/teachers?q={{1}}'
+# Поиск комнат по номеру (имени)
+search_rooms_by_name = f'{search_root}/rooms?q={{1}}'

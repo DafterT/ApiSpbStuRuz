@@ -24,3 +24,5 @@ rooms_by_building_id = f'{building_by_id}/rooms'
 rooms_scheduler_by_id_and_building_id = f'{rooms_by_building_id}/{{1}}/scheduler'
 # Получить расписание комнаты в корпусе по id корпуса и id комнаты в определенную дату
 rooms_scheduler_by_id_and_building_id_and_date = f'{rooms_scheduler_by_id_and_building_id}?date={{2}}-{{3}}-{{4}}'
+# Получить расписание группы по её id
+groups_scheduler_by_id = '/scheduler/{0}'

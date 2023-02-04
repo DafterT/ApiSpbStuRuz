@@ -151,24 +151,37 @@ class Day:
 
 
 @dataclass(frozen=True)
-class SchedulerTeacher:
+class Scheduler:
     week: Week | dict
-    teacher: Teacher | dict
-    days: tuple[Day | dict] = field(default_factory=tuple)
+    days: tuple[Day | dict]
 
     def __post_init__(self):
         object.__setattr__(self, "week", Week(**self.week))
-        object.__setattr__(self, "teacher", Teacher(**self.teacher))
         object.__setattr__(self, "days", tuple([Day(**i) for i in self.days]))
 
 
 @dataclass(frozen=True)
-class SchedulerRoom:
-    week: Week | dict
-    room: Auditory | dict
-    days: tuple[Day | dict] = field(default_factory=tuple)
+class SchedulerTeacher(Scheduler):
+    teacher: Teacher | dict
 
     def __post_init__(self):
-        object.__setattr__(self, "week", Week(**self.week))
+        super().__post_init__()
+        object.__setattr__(self, "teacher", Teacher(**self.teacher))
+
+
+@dataclass(frozen=True)
+class SchedulerRoom(Scheduler):
+    room: Auditory | dict
+
+    def __post_init__(self):
+        super().__post_init__()
         object.__setattr__(self, "room", Auditory(**self.room))
-        object.__setattr__(self, "days", tuple([Day(**i) for i in self.days]))
+
+
+@dataclass(frozen=True)
+class SchedulerGroup(Scheduler):
+    group: Group | dict
+
+    def __post_init__(self):
+        super().__post_init__()
+        object.__setattr__(self, "group", Group(**self.group))

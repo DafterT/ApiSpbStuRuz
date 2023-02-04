@@ -193,6 +193,14 @@ class ApiSpbStuRuz:
         )
         return rooms_scheduler
 
+    async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup:
+        groups_scheduler = await self.__get_something(
+            lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
+            apiPaths.groups_scheduler_by_id.format(group_id),
+            "Group's scheduler"
+        )
+        return groups_scheduler
+
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')
         # Уничтожение сессии

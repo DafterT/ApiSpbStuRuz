@@ -1,8 +1,7 @@
-""" Основная логика приложения """
+""" Основная логика АПИ """
 
 # Основные библиотеки
-import aiohttp.client_exceptions
-from aiohttp import ClientSession, ClientConnectionError
+from aiohttp import ClientSession, ClientConnectionError, client_exceptions
 import json
 # Логирование
 import logging
@@ -46,8 +45,8 @@ class ApiSpbStuRuz:
             # Ошибка клиента при запросе на сервер
             self._logger.error(f'Can\'t connect to the server: {e}')
             return None
-        except (aiohttp.client_exceptions.InvalidURL, aiohttp.client_exceptions.ClientHttpProxyError,
-                aiohttp.client_exceptions.ClientProxyConnectionError) as e:
+        except (client_exceptions.InvalidURL, client_exceptions.ClientHttpProxyError,
+                client_exceptions.ClientProxyConnectionError) as e:
             # Ошибка с прокси
             self._logger.error(f'Invalid proxy {self._proxy}: {e}')
             return None
@@ -103,7 +102,7 @@ class ApiSpbStuRuz:
         groups_list = await self.__get_something(
             lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']],
             apiPaths.groups_by_faculty_id.format(faculty_id),
-            "groups"
+            "Groups"
         )
         return groups_list
 
@@ -112,7 +111,7 @@ class ApiSpbStuRuz:
         teacher_list = await self.__get_something(
             lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']],
             apiPaths.teachers,
-            "teachers"
+            "Teachers"
         )
         return teacher_list
 
@@ -198,7 +197,7 @@ class ApiSpbStuRuz:
         return rooms_scheduler
 
     # Получить расписание группы по id
-    async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup:
+    async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup | None:
         groups_scheduler = await self.__get_something(
             lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
             apiPaths.groups_scheduler_by_id.format(group_id),
@@ -208,7 +207,8 @@ class ApiSpbStuRuz:
 
     # Получить расписание группы по id на определенную дату
     async def get_groups_scheduler_by_id_and_date(self, group_id: int,
-                                                  year: int, month: int, day: int) -> dataClasses.SchedulerGroup | None:
+                                                  year: int, month: int, day: int
+                                                  ) -> dataClasses.SchedulerGroup | None:
         groups_scheduler = await self.__get_something(
             lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
             apiPaths.groups_scheduler_by_id_and_date.format(group_id, year, month, day),

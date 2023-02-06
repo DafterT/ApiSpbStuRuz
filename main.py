@@ -5,8 +5,8 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        groups = await api.get_groups_by_name("3530901/1")
-        [print(group) for group in groups]
+        teachers = await api.get_teachers_by_name("")
+        [print(teacher) for teacher in teachers]
 
 
 if __name__ == "__main__":

@@ -225,6 +225,15 @@ class ApiSpbStuRuz:
         )
         return groups
 
+    # Получить группу по её имени
+    async def get_teachers_by_name(self, teachers_name: str) -> [dataClasses.Teacher]:
+        groups = await self.__get_something(
+            lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']],
+            apiPaths.search_teachers_by_name.format(teachers_name),
+            "Teacher's by name"
+        )
+        return groups
+
     async def __aexit__(self, *err):
         self._logger.info('End of the session.')
         # Уничтожение сессии

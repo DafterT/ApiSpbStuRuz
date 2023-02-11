@@ -1,4 +1,14 @@
-"""File with some data classes"""
+"""
+This file stores the date classes into which incoming data is converted.
+
+Many date classes that contain other date classes require post-processing because
+they are stored as a dict and not a date class, for this purpose __post_init__ is used.
+
+All data is stored in an immutable format.
+
+Date of create file: 01.28.2023
+"""
+
 import re
 from dataclasses import dataclass, field
 

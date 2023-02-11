@@ -1,3 +1,13 @@
+"""
+This file contains the paths that will be used to send get requests to the SPbPU api.
+It is taken from the repository on github: https://github.com/fleshka4/RuzSpbStuJavaApi
+
+The address is formed as root + path, so there is no need to add root to each line.
+However, the path is already formed based on the previous paths.
+
+Date of create file: 01.28.2023
+"""
+
 # Ссылка на корень, базовый url
 root = 'https://ruz.spbstu.ru/api/v1/ruz'
 # Путь до листа кафедр/высших школ

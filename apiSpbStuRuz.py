@@ -20,6 +20,7 @@ from logConfig import LogConfig
 from typing import Callable
 import dataClasses
 import apiPaths
+import apiSpbStuRuzExeptions
 
 
 class ApiSpbStuRuz:
@@ -82,19 +83,20 @@ class ApiSpbStuRuz:
                     return await response.json()
                 else:
                     self._logger.error(f'Incorrect status code from "{apiPaths.root}{path}": {response.status}')
-                    return None
+                    raise apiSpbStuRuzExeptions.ResponseCodeError(f'{apiPaths.root}{path}', response.status)
         except client_exceptions.ClientConnectionError as e:
             # Ошибка клиента при запросе на сервер
             self._logger.error(f'Can\'t connect to the server: {e}')
-            return None
+            raise apiSpbStuRuzExeptions.ClientConnectionError(e)
         except (client_exceptions.InvalidURL, client_exceptions.ClientHttpProxyError,
                 client_exceptions.ClientProxyConnectionError) as e:
             # Ошибка с прокси
             self._logger.error(f'Invalid proxy {self._proxy}: {e}')
-            return None
+            raise apiSpbStuRuzExeptions.ProxyError(self._proxy, e)
         except TimeoutError as e:
+            # Превышено время ожидания ответа
             self._logger.error(f'Waiting time exceeded: {e}')
-            return None
+            raise apiSpbStuRuzExeptions.TimeOutError(e)
 
     # Функция для обработки json, путь к api, текст для логирования
     async def __get_something(self, function: Callable, api_path: str, text: str):
@@ -115,20 +117,17 @@ class ApiSpbStuRuz:
             self._logger.debug(f'Returned information: {returned_information}')
             return returned_information
         except TypeError as e:
-            if response_json is None:
-                # Ошибка при подключении
-                self._logger.error('Returned json is None')
-            elif 'got an unexpected keyword argument' in e.args[0]:
+            if 'got an unexpected keyword argument' in e.args[0]:
                 # Вернувшийся json не корректен (возможно не правильный тип данных при преобразовании
-                self._logger.error(f'Can\'t convert json: {e}')
-            else:
-                # Если вдруг что-то пошло не так, чтоб закинуть информацию в лог
-                self._logger.error(f'Something goes wrong: {e}')
-            return None
+                self._logger.error(f'Can\'t convert json {response_json}: {e}')
+                raise apiSpbStuRuzExeptions.JsonConvertError(response_json, e)
+            # Если вдруг что-то пошло не так, чтоб закинуть информацию в лог
+            self._logger.error(f'Something goes wrong: {e}')
+            raise apiSpbStuRuzExeptions.JsonTypeError(e)
         except KeyError as e:
             # При поиске значения в json введен неверный ключ
             self._logger.error(f'Can\'t found key in json_file: {e}')
-            return None
+            raise apiSpbStuRuzExeptions.JsonKeyError(e)
 
     # Получение кафедр
     async def get_faculties(self) -> [dataClasses.Faculty]:
@@ -145,7 +144,7 @@ class ApiSpbStuRuz:
         return faculties_list
 
     # Получение кафедры по id
-    async def get_faculty_by_id(self, faculty_id: int) -> dataClasses.Faculty | None:
+    async def get_faculty_by_id(self, faculty_id: int) -> dataClasses.Faculty:
         """
         Returns the department/higher school by its id.
         You may need to get the name by id.
@@ -188,7 +187,7 @@ class ApiSpbStuRuz:
         return teacher_list
 
     # Выдает преподавателя по id
-    async def get_teacher_by_id(self, teacher_id: int) -> dataClasses.Teacher | None:
+    async def get_teacher_by_id(self, teacher_id: int) -> dataClasses.Teacher:
         """
         :param teacher_id: teacher id (exactly id, not oid).
         :return: Information about the teacher.
@@ -201,7 +200,7 @@ class ApiSpbStuRuz:
         return teacher
 
     # Выдает расписание преподавателя по id
-    async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.SchedulerTeacher | None:
+    async def get_teacher_scheduler_by_id(self, teacher_id: int) -> dataClasses.SchedulerTeacher:
         """
         :param teacher_id: teacher id (exactly id, not oid).
         :return: Information about the teacher's scheduler.
@@ -216,7 +215,7 @@ class ApiSpbStuRuz:
     # Выдает расписание преподавателя по id и дате
     async def get_teacher_scheduler_by_id_and_date(self, teacher_id: int,
                                                    year: int, month: int,
-                                                   day: int) -> dataClasses.SchedulerTeacher | None:
+                                                   day: int) -> dataClasses.SchedulerTeacher:
         """
         :param teacher_id: teacher id (exactly id, not oid).
         :param day: A day in the week, the schedule of which you need to get.
@@ -249,7 +248,7 @@ class ApiSpbStuRuz:
         return buildings
 
     # Получить корпус по id
-    async def get_building_by_id(self, building_id: int) -> dataClasses.Building | None:
+    async def get_building_by_id(self, building_id: int) -> dataClasses.Building:
         """
         :param building_id: id of the building itself.
         :return: Building Information. Be careful, often the information is not filled in completely.
@@ -280,7 +279,7 @@ class ApiSpbStuRuz:
     async def get_rooms_scheduler_by_id_and_building_id(self,
                                                         building_id: int,
                                                         room_id: int
-                                                        ) -> dataClasses.SchedulerRoom | None:
+                                                        ) -> dataClasses.SchedulerRoom:
         """
         Get a schedule in a class by its id in a specific building by its id.
 
@@ -300,7 +299,7 @@ class ApiSpbStuRuz:
                                                                  building_id: int,
                                                                  room_id: int,
                                                                  year: int, month: int, day: int
-                                                                 ) -> dataClasses.SchedulerRoom | None:
+                                                                 ) -> dataClasses.SchedulerRoom:
         """
         Get a schedule in a class by its id in a specific building by its id.
 
@@ -319,7 +318,7 @@ class ApiSpbStuRuz:
         return rooms_scheduler
 
     # Получить расписание группы по id
-    async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup | None:
+    async def get_groups_scheduler_by_id(self, group_id: int) -> dataClasses.SchedulerGroup:
         """
         Get the schedule of a group by its id.
 
@@ -336,7 +335,7 @@ class ApiSpbStuRuz:
     # Получить расписание группы по id на определенную дату
     async def get_groups_scheduler_by_id_and_date(self, group_id: int,
                                                   year: int, month: int, day: int
-                                                  ) -> dataClasses.SchedulerGroup | None:
+                                                  ) -> dataClasses.SchedulerGroup:
         """
         Get the schedule of a group by its id.
 

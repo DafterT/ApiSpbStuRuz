@@ -10,7 +10,7 @@ from apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz("", timeout=10) as api:
-        teacher = await api.get_teacher_by_id(99217)
+        teacher = await api.get_teacher_by_id(9217)
         print(teacher)
 
 

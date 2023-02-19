@@ -15,12 +15,12 @@ from aiohttp import ClientSession, client_exceptions
 import json
 # Logging libraries
 import logging
-from logConfig import LogConfig
 # Other libraries
 from typing import Callable
-import dataClasses
-import apiPaths
-import apiSpbStuRuzExeptions
+from . import apiPaths
+from . import dataClasses
+from . import apiSpbStuRuzExeptions
+from . import LogConfig
 
 
 class ApiSpbStuRuz:

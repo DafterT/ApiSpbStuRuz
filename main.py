@@ -5,11 +5,11 @@ Date of create file: 01.28.2023
 """
 
 import asyncio
-from ApiSpbStuRuz.apiSpbStuRuz import ApiSpbStuRuz
+from ApiSpbStuRuz import ApiSpbStuRuz
 
 
 async def main():
-    async with ApiSpbStuRuz("", timeout=10) as api:
+    async with ApiSpbStuRuz() as api:
         teacher = await api.get_teacher_by_id(9217)
         print(teacher)
 

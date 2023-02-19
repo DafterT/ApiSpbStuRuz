@@ -20,6 +20,7 @@ its id on a certain date (actually returns the schedule for the week on which th
 * `get_groups_by_name` - returns a group object by its name (сan return multiple objects)
 * `get_teachers_by_name` - returns a teacher object by her name (сan return multiple objects)
 * `get_rooms_by_name` - returns a room object by its name (сan return multiple objects)
+___
 ## Paths:
 * **https://ruz.spbstu.ru/api/v1/ruz**
   * **/faculties** - getting a list of faculties (institutes)
@@ -40,6 +41,7 @@ its id on a certain date (actually returns the schedule for the week on which th
     * **/groups?q=name** - search for a group by its name (example name="3530901/10001" -> 35376)
     * **/teachers?q=name** - search for a teacher by first name/last name/patronymic/full_name (replace spaces with %20 when requested)
     * **/rooms?q=name** - search by audience name
+___
 ## Files:
 * **apiSpbStuRuz.py** - this file implements the basic API logic
 * **dataClasses.py** - this file contains all the data classes into which the received data is converted

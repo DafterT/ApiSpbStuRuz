@@ -21,7 +21,25 @@ its id on a certain date (actually returns the schedule for the week on which th
 * `get_teachers_by_name` - returns a teacher object by her name (сan return multiple objects)
 * `get_rooms_by_name` - returns a room object by its name (сan return multiple objects)
 ## Paths:
-* 
+* **https://ruz.spbstu.ru/api/v1/ruz**
+  * **/faculties** - getting a list of faculties (institutes)
+    * **/id** - getting the name by the id of the department (institute)
+      * **/groups** - getting a list of groups by department (institute) id
+  * **/teachers** - list of all teachers
+    * **/id** - search for a teacher by id
+      * **/scheduler** - teacher's schedule by his id for the current week
+        * **?date=yyyy-mm-dd** - teacher's schedule by his id for the week with the entered date
+  * **/buildings** - list of "structures"/buildings (Note that it has a bunch of garbage values)
+    * **/id** - search for "structures" by id
+      * **/rooms** - list of rooms in a building by its id
+        * **/id/scheduler** - schedule by room's id
+          * **?date=yyyy-mm-dd** - similarly by date
+  * **/scheduler/id** - getting a schedule by group id for the current week
+    * **?date=yyyy-mm-dd** - getting a week by a specific date
+  * **/search**
+    * **/groups?q=name** - search for a group by its name (example name="3530901/10001" -> 35376)
+    * **/teachers?q=name** - search for a teacher by first name/last name/patronymic/full_name (replace spaces with %20 when requested)
+    * **/rooms?q=name** - search by audience name
 ## Files:
 * **apiSpbStuRuz.py** - this file implements the basic API logic
 * **dataClasses.py** - this file contains all the data classes into which the received data is converted

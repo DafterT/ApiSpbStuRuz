@@ -2,7 +2,7 @@
 ## How to use:
 You are required to create an `ApiSpbStuRuz` using `async with` statement. For example like this:
 ```(python)
-async with ApiSpbStuRuz("", timeout=10) as api:
+async with ApiSpbStuRuz() as api:
     teacher = await api.get_teacher_by_id(9217)
     print(teacher)
 ```

@@ -43,9 +43,10 @@ class ApiSpbStuRuz:
         :param timeout: If you want to change the request timeout from 5 seconds, then use this parameter
         """
         # Инициализация логгера
-        self._logger = logging.getLogger(LogConfig.logger_name)
-        self._logger.setLevel(LogConfig.logging_level)
-        self._logger.addHandler(LogConfig.log_handler)
+        logger = LogConfig()
+        self._logger = logging.getLogger(logger.logger_name)
+        self._logger.setLevel(logger.logging_level)
+        self._logger.addHandler(logger.log_handler)
         # Прокси
         self._proxy = proxy
         self._timeout = timeout

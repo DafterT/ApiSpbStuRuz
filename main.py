@@ -5,7 +5,7 @@ Date of create file: 01.28.2023
 """
 
 import asyncio
-from ApiSpbStuRuz import ApiSpbStuRuz
+from ApiSpbStuRuz.apiSpbStuRuz import ApiSpbStuRuz
 
 
 async def main():

@@ -13,8 +13,6 @@ Date of create file: 01.28.2023
 # Main logic libraries
 from aiohttp import ClientSession, client_exceptions
 import json
-# Logging libraries
-import logging
 # Other libraries
 from typing import Callable
 from . import apiPaths
@@ -44,9 +42,7 @@ class ApiSpbStuRuz:
         """
         # Инициализация логгера
         logger = LogConfig()
-        self._logger = logging.getLogger(logger.logger_name)
-        self._logger.setLevel(logger.logging_level)
-        self._logger.addHandler(logger.log_handler)
+        self._logger = logger.get_logger()
         # Прокси
         self._proxy = proxy
         self._timeout = timeout

@@ -10,7 +10,7 @@ from ApiSpbStuRuz.apiSpbStuRuz import ApiSpbStuRuz
 
 async def main():
     async with ApiSpbStuRuz() as api:
-        teacher = await api.get_teacher_by_id(9217)
+        teacher = await api.get_teacher_by_id(999335)
         print(teacher)
 
 

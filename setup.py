@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='ApiSpbStuRuz',
-    version='1.1.1',
+    version='1.1.2',
     author='Dafter',
     author_email='DafterPlay@mail.ru',
     description='Library implementing API schedules of SPbPu',

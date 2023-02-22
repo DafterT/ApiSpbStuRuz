@@ -18,7 +18,7 @@ from typing import Callable
 from . import apiPaths
 from . import dataClasses
 from . import apiSpbStuRuzExeptions
-from . import LogConfig
+from .logConfig import LogConfig
 
 
 class ApiSpbStuRuz:

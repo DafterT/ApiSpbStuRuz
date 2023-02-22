@@ -1,6 +1,16 @@
 # Library implementing API
 
 ___
+<p align="center">
+<a href="https://pypi.org/project/ApiSpbStuRuz/">
+    <img src="https://img.shields.io/badge/download-PyPi-red.svg">
+</a>
+<img src="https://img.shields.io/badge/made%20by-Dafter-orange.svg">
+<img src="https://img.shields.io/github/license/DafterT/ApiSpbStuRuz">
+<img src="https://img.shields.io/github/last-commit/DafterT/ApiSpbStuRuz">
+</p>
+
+___
 
 ## How to use:
 

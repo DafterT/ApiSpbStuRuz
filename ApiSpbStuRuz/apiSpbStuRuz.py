@@ -29,19 +29,24 @@ class ApiSpbStuRuz:
     Must be created only using async with statements
     """
 
-    def __init__(self, proxy=None, timeout=5):
+    def __init__(self, create_logger=False, path_log='log/', try_create_dict=True, proxy=None, timeout=5):
         """
-        Initialization of synchronous parameters.
+        Initialization of synchronous parameters and logger parameters.
 
         Here you can pass the proxy in the format that the aiohttp library requires,
         as well as the timeout after which the request will drop and give an error.
 
+        :param create_logger: if you want to use a logger, pass True, otherwise don't change.
+        :param path_log: the path to the folder where the logger will write logs.
+        Before using, do not forget to enable the logger.
+        :param try_create_dict: If you want the logger not to try to create a folder with logs,
+        then turn off this parameter.
         :param proxy: If you want to use a proxy for requests, then pass them to this parameter.
         Proxies are not used as standard. The proxy should be transmitted in the format required by the aiohttp library
         :param timeout: If you want to change the request timeout from 5 seconds, then use this parameter
         """
         # Инициализация логгера
-        logger = LogConfig()
+        logger = LogConfig(create_logger=create_logger, path_log=path_log, try_create_dict=try_create_dict)
         self._logger = logger.get_logger()
         # Прокси
         self._proxy = proxy

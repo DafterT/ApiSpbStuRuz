@@ -11,7 +11,20 @@ import os
 
 
 class LogConfig:
-    def __init__(self, create_logger=False, path_log='log/'):
+    """
+    A class containing the logger settings and a function for creating it
+    """
+
+    def __init__(self, create_logger=False, path_log='log/', try_create_dict=True):
+        """
+        Init start configs for logger. Create directory, if you want.
+
+        :param create_logger: if you want to use a logger, pass True, otherwise don't change.
+        :param path_log: the path to the folder where the logger will write logs.
+        Before using, do not forget to enable the logger.
+        :param try_create_dict: If you want the logger not to try to create a folder with logs,
+        then turn off this parameter.
+        """
         # Создали заглушки
         self.logger_name = None
         self.log_handler = None
@@ -23,7 +36,7 @@ class LogConfig:
         # Имя логгера
         self.logger_name = 'ApiSpbStuRuz'
         # Создание папки log
-        if not os.path.exists(path_log):
+        if try_create_dict and not os.path.exists(path_log):
             os.makedirs(path_log)
         # Название файла отладки
         log_file_name = f'{path_log}/log-{datetime.datetime.now().strftime("%Y%m%d-%H%M%S%f")}.txt'
@@ -33,6 +46,9 @@ class LogConfig:
         self.log_handler.setFormatter(log_formatter)
 
     def get_logger(self):
+        """
+        :return: will return the logger.
+        """
         logger = logging.getLogger(self.logger_name)
         logger.setLevel(self.logging_level)
         logger.addHandler(self.log_handler)

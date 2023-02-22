@@ -3,9 +3,18 @@
 You are required to create an `ApiSpbStuRuz` using `async with` statement. For example like this:
 ```(python)
 async with ApiSpbStuRuz() as api:
-    teacher = await api.get_teacher_by_id(9217)
+    teacher = await api.get_teacher_by_id(999335)
     print(teacher)
 ```
+When you create a class, you have a number of parameters:
+* **create_logger** - if you want to use a logger, pass True, otherwise don't change.
+* **path_log** - the path to the folder where the logger will write logs.  
+Before using, do not forget to enable the logger.
+* **try_create_dict** - If you want the logger not to try to create a folder with logs,
+then turn off this parameter.
+* **proxy** - If you want to use a proxy for requests, then pass them to this parameter.  
+Proxies are not used as standard. The proxy should be transmitted in the format required by the aiohttp library
+* **timeout** - If you want to change the request timeout from 5 seconds, then use this parameter
 ## Functions:
 * `get_faculties` - returns a list of faculties
 * `get_faculty_by_id` - gets the id of the faculty, returns an object with the faculty
